@@ -17,15 +17,15 @@ services:
     tty: true
     container_name: research
     volumes:
-      - "/data/data1/zcash/research:/root/research"
+      - "/data/research:/root/research"
   zcashpostgres:
     build:
       context: ./zcashpostgres
     mem_limit: 1000M
     cpu_quota: 40000
     volumes:
-      - "/data/data1/zcash/pgdata:/var/run/postgresql/data/pgdata"
-      - "/data/data1/zcash/research:/root/research"
+      - "/data/pgdata:/var/run/postgresql/data/pgdata"
+      - "/data/research:/root/research"
     ports:
     - "8001:5432"
     container_name: zcashpostgres
