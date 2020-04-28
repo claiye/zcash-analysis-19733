@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y software-properties-common \
     gnupg \
     curl \
     build-essential \
-    checkinstall \
     libreadline-gplv2-dev \
     libncursesw5-dev \
     libssl-dev \
@@ -23,10 +22,10 @@ RUN apt-get update && apt-get install -y software-properties-common \
 
 # download and install apache spark from the mirror
 RUN mkdir -p /opt/spark && \
-    wget -q --show-progress http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-2.2.0/spark-2.2.0-bin-hadoop2.7.tgz && \
-    tar -xzf spark-2.2.0-bin-hadoop2.7.tgz && \
-    cp -r spark-2.2.0-bin-hadoop2.7/* /opt/spark && \
-    rm -rf spark-2.2.0-bin-hadoop2.7.tgz spark-2.2.0-bin-hadoop2.7 && \
+    wget -q --show-progress http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz && \
+    tar -xzf spark-2.4.5-bin-hadoop2.7.tgz && \
+    cp -r spark-2.4.5-bin-hadoop2.7/* /opt/spark && \
+    rm -rf spark-2.4.5-bin-hadoop2.7.tgz spark-2.4.5-bin-hadoop2.7 && \
     cd  /opt/spark && \
     wget https://jdbc.postgresql.org/download/postgresql-42.2.2.jar
 

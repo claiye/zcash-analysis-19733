@@ -80,15 +80,18 @@ def checkPostGreSQL():
 
 
 def rpcConnection():
-    rpc_connection = AuthServiceProxy("http://%s:%s@zcash:%i/" % (config.RPC_USER, config.RPC_PASSWORD, config.ZCASH_RPC_PORT), timeout=120)
-    # test it
+    print("connecting to http://%s:%s@127.0.0.1:%i/" % (config.RPC_USER, config.RPC_PASSWORD, config.ZCASH_RPC_PORT)) 
+    rpc_connection = AuthServiceProxy("http://%s:%s@0.0.0.0:%i/" % (config.RPC_USER, config.RPC_PASSWORD, config.ZCASH_RPC_PORT), timeout=120)
+    rpc_connection2 = AuthServiceProxy("http://%s:%s@0.0.0.0:8331/" % (config.RPC_USER, config.RPC_PASSWORD), timeout=120) 
+	# test it
     count = 0
     maxTries = 5
     while(count<maxTries):
         count += 1
         try:
             info = rpc_connection.getinfo()
-            return rpc_connection
+            info2 = rpc_connection.get_info() 
+	    return rpc_connection
         except JSONRPCException as e:
             print "Authentication error " + str(e)
             print "Exiting program "

@@ -1,9 +1,11 @@
+
+
 FROM bitnami/minideb:stretch
 LABEL maintainer="rainer.stuetz@ait.ac.at"
 
 RUN mkdir -p /root/.zcash && mkdir -p /root/zcashsrc
 
-ADD docker/zcash.conf /root/.zcash/.zcash.conf
+ADD docker/zcash.conf /root/.zcash/zcash.conf
 ADD docker/Makefile /root/zcashsrc/Makefile
 
 RUN apt-get update && \
@@ -37,10 +39,10 @@ RUN apt-get update && \
         libssl-dev \
         perl \
         zlib1g-dev && \
-    chown -R root:root /root/.zcash-params/ && \
-    rm -rf /root/zcashsrc/src
+    chown -R root:root ~/.zcash-params/ && \
+    rm -rf ~/zcashsrc/src
 
 VOLUME ["/root/.zcash"]
 EXPOSE 8331
 
-CMD zcashd -daemon -rest -conf=/root/.zcash/zcash.conf && bash
+CMD zcashd -daemon -rest -conf=/root/.zcash/zcash.conf -rpcbind=0.0.0.0 -rpcallowip=0.0.0.0/0 -rpcallowip=172.18.0.2/16 -rpcallowip=172.18.0.0/255.255.0.0 && bash

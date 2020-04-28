@@ -13,8 +13,8 @@ Config files
 POSTGRES_USER = 'postgres'
 POSTGRES_DB = 'zcashdb'
 ZCASH_RPC_PORT = 8331
-RPC_USER = 'RPCUSER'
-RPC_PASSWORD = 'RPCPASSWORD'
+RPC_USER = 'patek'
+RPC_PASSWORD = 'mari0'
 
 
 
