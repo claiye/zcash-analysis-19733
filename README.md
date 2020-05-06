@@ -359,6 +359,14 @@ by executing the following in the `research` container
     - Re-run the analysis, you may keep the manual csv files you previously created
 
 
+# Troubleshooting 
+
+## zcash client keeps exiting with "killed". What do I do? 
+According to issue 
+
+## 
+
+
 # Appendix
 
 ## Other ways to generate the data
