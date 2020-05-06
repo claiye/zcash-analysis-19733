@@ -362,7 +362,11 @@ by executing the following in the `research` container
 # Troubleshooting 
 
 zcash client keeps exiting with "killed". What do I do? 
-According to https://github.com/zcash/zcash/issues/2825, this is most likely do to a shortage of RAM space on the AWS server. We recommend either adding `rpcthreads=32` and `rpcworkqueue=64` lines to the `zcash.conf` (and update accordingly in all folders where it is copied to) or upgrading the AWS server. We found that this issue persists on the t2.2xlarge instance and would recommend at least 32 GB RAM. 
+
+According to https://github.com/zcash/zcash/issues/2825, this is most likely do to a shortage of RAM space on the AWS
+server. We recommend either adding `rpcthreads=32` and `rpcworkqueue=64` lines to the `zcash.conf` (and update accordingly 
+in all folders where it is copied to) or upgrading the AWS server. We found that this issue persists on the t2.2xlarge 
+instance and would recommend at least 32 GB RAM. 
 
 
 # Appendix
