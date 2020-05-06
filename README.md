@@ -361,12 +361,39 @@ by executing the following in the `research` container
 
 # Troubleshooting 
 
-zcash client keeps exiting with "killed". What do I do? 
+**zcash client keeps exiting (Killed) without keyboard interrupt. **
 
 According to https://github.com/zcash/zcash/issues/2825, this is most likely do to a shortage of RAM space on the AWS
 server. We recommend either adding `rpcthreads=32` and `rpcworkqueue=64` lines to the `zcash.conf` (and update accordingly 
 in all folders where it is copied to) or upgrading the AWS server. We found that this issue persists on the t2.2xlarge 
 instance and would recommend at least 32 GB RAM. 
+
+
+**Running out of space while running `docker-compose build`.** 
+
+
+Possibly many reasons for this, but it is most likely because Docker eats up resources every time you re-build the container (even with minimal changes to the configuration of the container itself). Some possible problems and their solutions solutions that we have encountered are 
+
+- If the error message refers to anything about `/var/lib`, you may have to delete the docker package to free up adequate space. 
+
+- Check the inode usage on the server via `df -i`. If IUsed is at 100%, you should free some of the inodes. Inodes accumulate inconspicuously when downloading / creating many new files.  https://stackoverflow.com/questions/653096/how-to-free-inode-usage provides a bash solution for freeing up inodes. 
+
+
+**RPC connection refused while running `zcash_extraction.py` ** 
+
+
+If the client is not synced up to current block height, then it will not allow RPC calls. Make sure to run your zcash client with `-rest` if the situation persists. You can also try restarting the client by running 
+    pkill zcashd 
+    zcashd -rest -conf=/root/.zcash/zcash.conf
+
+
+# Updates from Published Experiment 
+
+- Updated various packages needed to create docker containers (previously could not be run on Ubuntu 18.04). Mostly ones that were previous outdated. Some packages are updated to not include a specific version number. 
+
+- Added parameters to `zcash.conf` to ensure faster zcash updating / no hang.
+
+- Changed `zcash_extraction.py` port numbers to allow RPC calls between containers on AWS server. See section on AWS adjustments to find the appropraite `rpcport` for your experiment. 
 
 
 # Appendix
