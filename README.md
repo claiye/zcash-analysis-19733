@@ -361,7 +361,7 @@ by executing the following in the `research` container
 
 # Troubleshooting 
 
-**zcash client keeps exiting (Killed) without keyboard interrupt. **
+**zcash client keeps exiting (Killed) without keyboard interrupt.**
 
 According to https://github.com/zcash/zcash/issues/2825, this is most likely do to a shortage of RAM space on the AWS
 server. We recommend either adding `rpcthreads=32` and `rpcworkqueue=64` lines to the `zcash.conf` (and update accordingly 
@@ -379,10 +379,11 @@ Possibly many reasons for this, but it is most likely because Docker eats up res
 - Check the inode usage on the server via `df -i`. If IUsed is at 100%, you should free some of the inodes. Inodes accumulate inconspicuously when downloading / creating many new files.  https://stackoverflow.com/questions/653096/how-to-free-inode-usage provides a bash solution for freeing up inodes. 
 
 
-**RPC connection refused while running `zcash_extraction.py` ** 
+**RPC connection refused while running `zcash_extraction.py`** 
 
 
 If the client is not synced up to current block height, then it will not allow RPC calls. Make sure to run your zcash client with `-rest` if the situation persists. You can also try restarting the client by running 
+
     pkill zcashd 
     zcashd -rest -conf=/root/.zcash/zcash.conf
 
