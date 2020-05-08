@@ -153,11 +153,11 @@ def updateDatabase(currentBlockHeight, latestBlock):
     print("Using mainnet")
     print("Latest block is : "+ str(latestBlock))
     print("Collecting blocks from range " + str(currentBlockHeight) + " to " + str(latestBlock))
+    rpc = rpcConnection() 
     for blockHeight in range(currentBlockHeight+1, latestBlock+1, 1):
         print("Block " + str(blockHeight) +  "/" + str(latestBlock))
         objects = []
         # print("Block: " ,str(blockHeight))
-        rpc = rpcConnection()
         block = rpc.getblock(str(blockHeight))
         #print("Block received, generating class")
         #print("Hash :" +  (str(block["hash"])))
