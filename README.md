@@ -388,9 +388,8 @@ If the client is not synced up to current block height, then it will not allow R
     zcashd -rest -conf=/root/.zcash/zcash.conf
 
 
-**_PYSPARK_DRIVER_CONN_INFO_PATH exceptino error in `research` container**
+**\_PYSPARK_DRIVER_CONN_INFO_PATH exception error in `research` container**
 
-Reinstall Spark on pip via 
 
     pip2 uninstall backports.functools-lru-cache
     apt-get install python-backports.functools-lru-cache
