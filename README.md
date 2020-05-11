@@ -390,7 +390,10 @@ If the client is not synced up to current block height, then it will not allow R
 
 **_PYSPARK_DRIVER_CONN_INFO_PATH exceptino error in `research` container**
 
-Reinstall Spark on pip via `pip uninstall pyspark; pip install pyspark`. 
+Reinstall Spark on pip via 
+
+    pip2 uninstall backports.functools-lru-cache
+    apt-get install python-backports.functools-lru-cache
 
 **cannot find [some Python import]**
 
