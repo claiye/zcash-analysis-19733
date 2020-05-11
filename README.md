@@ -388,6 +388,15 @@ If the client is not synced up to current block height, then it will not allow R
     zcashd -rest -conf=/root/.zcash/zcash.conf
 
 
+**_PYSPARK_DRIVER_CONN_INFO_PATH exceptino error in `research` container**
+
+Reinstall Spark on pip via `pip uninstall pyspark; pip install pyspark`. 
+
+**cannot find [some Python import]**
+
+`pip install [some Python import]`
+
+
 # Updates from Published Experiment 
 
 - Updated various packages needed to create docker containers (previously could not be run on Ubuntu 18.04). Mostly ones that were previous outdated. Some packages are updated to not include a specific version number. 
