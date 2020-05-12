@@ -399,6 +399,14 @@ If the client is not synced up to current block height, then it will not allow R
 `pip install [some Python import]`
 
 
+**java.io.IOException: No space left on device error while running `pqsl` commands before heuristics.** 
+
+Check the disk space via `df -h`. If the partition the containers are running on is out of space, then you need to extend your EBS storage. If it is not out of space, then you may need to redirect PySpark's `tmp` folder. 
+
+    echo "spark.local.dir /SOME/DIR/WHERE/YOU/HAVE/SPACE" > PARK_HOME/conf/spark-defaults.conf
+
+The directory needs to be one on your EBS storage for this solution to work. 
+
 # Updates from Published Experiment 
 
 - Updated various packages needed to create docker containers (previously could not be run on Ubuntu 18.04). Mostly ones that were previous outdated. Some packages are updated to not include a specific version number. 
