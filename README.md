@@ -407,6 +407,11 @@ Check the disk space via `df -h`. If the partition the containers are running on
 
 The directory needs to be one on your EBS storage for this solution to work. 
 
+**Indefinite hanging / exiting without an error while running `python heuristicClustering1.py 8a 8b 8c`** 
+
+Issue seems to be due to PySpark. Right now, it seems that it cannot process beyond a certain number of data points (250k blockheight is around the limit). No solution as of now. 
+
+
 # Updates from Published Experiment 
 
 - Updated various packages needed to create docker containers (previously could not be run on Ubuntu 18.04). Mostly ones that were previous outdated. Some packages are updated to not include a specific version number. 
