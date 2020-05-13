@@ -10,16 +10,18 @@ All authors are supported by the EUH2020 TITANIUM project under grant agreement 
 
 Please read this `README.md` from start to finish before attempting the analysis.
 
+Code is updated by Claire Ye and Chinedu Ojukwu to run on AWS Ubuntu 18.04+. 
+
 # Prerequisites
 
 - Docker
-- At least 3x storage space of the current blockchain
-
+- ~~At least 3x storage space of the current blockchain~~
+- At least 10x storage space of current blockchain 
 
 # Installation
 
 - Clone this repository
-- CD into the root of this repository `zcash-empirical-analysis`
+- cd into the root of this repository `zcash-empirical-analysis`
 
 ## Configuration
 
@@ -116,9 +118,9 @@ so they can interact
 
     which will execute the command on the zcash-cli interface and return the results
 
-    **Note: If you get a `permission denied error` then `chmod +x` the script file**
+    - The alternative to this is to run Zcash client outside of the container. The official Zcash doc provides information on how to install and run the client so that the blockchain is downloaded and can take RPC calls. 
 
-- Once the Zcash node is synced, the postgres database can be populated with data
+- Once the Zcash node is synced, the postgres database can be populated with data. **The Zcash node needs to be fully synced and not downloading new blocks in order to take RPC calls. Yeah, it sucks.** 
     - Login into the `zcashpostgres` node using the docker command above and run the following
     - To setup the database and instantiate the tables *Note: This will erase all previous data*
 
@@ -129,12 +131,15 @@ so they can interact
             cd $SCRIPTS
             python zcash_extraction.py
 
-        *Note: This command will take 1 hour per 1,500 blocks.
+        ~~*Note: This command will take 1 hour per 1,500 blocks.~~
+        *Note: This command will now take 3,000 blocks per hour. :') 
+        
         It will parse all the available data on the node.
         If re-run it will start from the last block committed in postgres
         If you cannot get a `connection refused` error, please check
         that the `rpcallowip` in the `zcash.conf` has been correctly set
-        to the range used in the docker network*
+        to the range used in the docker network* See the bottom section on our changes 
+        for how to run this in AWS. 
 
 - Once the above steps are complete you may continue
 
@@ -358,6 +363,73 @@ by executing the following in the `research` container
     - Re-run the configuration steps, editing the `research/docker/config.py` file with a higher block height
     - Re-run the analysis, you may keep the manual csv files you previously created
 
+
+# Troubleshooting 
+
+**zcash client keeps exiting (Killed) without keyboard interrupt.**
+
+According to https://github.com/zcash/zcash/issues/2825, this is most likely do to a shortage of RAM space on the AWS
+server. We recommend either adding `rpcthreads=32` and `rpcworkqueue=64` lines to the `zcash.conf` (and update accordingly 
+in all folders where it is copied to) or upgrading the AWS server. We found that this issue persists on the t2.2xlarge 
+instance and would recommend at least 32 GB RAM. 
+
+
+**Running out of space while running `docker-compose build`.** 
+
+
+Possibly many reasons for this, but it is most likely because Docker eats up resources every time you re-build the container (even with minimal changes to the configuration of the container itself). Some possible problems and their solutions solutions that we have encountered are 
+
+- If the error message refers to anything about `/var/lib`, you may have to delete the docker package to free up adequate space. 
+
+- Check the inode usage on the server via `df -i`. If IUsed is at 100%, you should free some of the inodes. Inodes accumulate inconspicuously when downloading / creating many new files.  https://stackoverflow.com/questions/653096/how-to-free-inode-usage provides a bash solution for freeing up inodes. 
+
+
+**RPC connection refused while running `zcash_extraction.py`** 
+
+
+If the client is not synced up to current block height, then it will not allow RPC calls. Make sure to run your zcash client with `-rest` if the situation persists. You can also try restarting the client by running 
+
+    pkill zcashd 
+    zcashd -rest -conf=/root/.zcash/zcash.conf
+
+
+**\_PYSPARK_DRIVER_CONN_INFO_PATH exception error in `research` container**
+
+
+    pip2 uninstall backports.functools-lru-cache
+    apt-get install python-backports.functools-lru-cache
+
+**cannot find [some Python import]**
+
+`pip install [some Python import]`
+
+Most likely due to some packages not found while creating container environments. Look out for warnings during `docker-compose build`. Reinstalling within the container's bash seems to fix it fine. 
+
+
+**java.io.IOException: No space left on device error while running `pqsl` commands before heuristics.** 
+
+Check the disk space via `df -h`. If the partition the containers are running on is out of space, then you need to extend your EBS storage. If it is not out of space, then you may need to redirect PySpark's `tmp` folder. 
+
+    echo "spark.local.dir /SOME/DIR/WHERE/YOU/HAVE/SPACE" > PARK_HOME/conf/spark-defaults.conf
+
+The directory needs to be one on your EBS storage for this solution to work. 
+
+**Indefinite hanging / exiting without an error while running `python heuristicClustering1.py 8a 8b 8c`** 
+
+Issue seems to be due to PySpark. Right now, it seems that it cannot process beyond a certain number of data points (250k blockheight is around the limit). No solution as of now. 
+
+
+# Updates from Published Experiment 
+
+- Updated various packages needed to create docker containers (previously could not be run on Ubuntu 18.04). Mostly ones that were previous outdated. Some packages are updated to not include a specific version number. 
+
+- Added parameters to `zcash.conf` to ensure faster zcash updating / no hang.
+
+- Changed `zcash_extraction.py` port numbers to allow RPC calls between containers on AWS server. If running Zcash client inside container, run `ip a` to find the docker's IP and port and set `rpcallowip = <docker ip>`. 
+
+- **3x the blockchain space is far from enough to run this experiment. At around 26 GiB of blockchain information, we found 230 GiB of space to run the Docker containers insufficient.** It seems that as blockchain size increases, the need for more memory and RAM increases exponentially with it. It seems to be the case that Spark consumes a very large amount of temp storage while converting the block informations into an accessible format. 
+
+- Ran Zcash client outside of container. Found that leaving Zcash client on for a long time leads to it getting killed for eating up RAM (a Docker issue). Did not encounter any anomalies when Zcash ran locally instead of in isolated environment. 
 
 # Appendix
 
