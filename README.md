@@ -15,7 +15,7 @@ Code is updated by Claire Ye and Chinedu Ojukwu to run on AWS Ubuntu 18.04+.
 # Prerequisites
 
 - Docker
-~~- At least 3x storage space of the current blockchain~~
+- ~~At least 3x storage space of the current blockchain~~
 - At least 10x storage space of current blockchain 
 
 # Installation
@@ -132,12 +132,14 @@ so they can interact
             python zcash_extraction.py
 
         ~~*Note: This command will take 1 hour per 1,500 blocks.~~
-        *Note: This command will now take 3,000 blocks per hour. :) 
+        *Note: This command will now take 3,000 blocks per hour. :') 
+        
         It will parse all the available data on the node.
         If re-run it will start from the last block committed in postgres
         If you cannot get a `connection refused` error, please check
         that the `rpcallowip` in the `zcash.conf` has been correctly set
-        to the range used in the docker network*
+        to the range used in the docker network* See the bottom section on our changes 
+        for how to run this in AWS. 
 
 - Once the above steps are complete you may continue
 
