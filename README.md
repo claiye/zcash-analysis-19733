@@ -118,7 +118,7 @@ so they can interact
 
     which will execute the command on the zcash-cli interface and return the results
 
-    **Note: If you get a `permission denied error` then `chmod +x` the script file**
+    - The alternative to this is to run Zcash client outside of the container. The official Zcash doc provides information on how to install and run the client so that the blockchain is downloaded and can take RPC calls. 
 
 - Once the Zcash node is synced, the postgres database can be populated with data. **The Zcash node needs to be fully synced and not downloading new blocks in order to take RPC calls. Yeah, it sucks.** 
     - Login into the `zcashpostgres` node using the docker command above and run the following
