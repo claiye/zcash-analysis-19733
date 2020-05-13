@@ -10,16 +10,18 @@ All authors are supported by the EUH2020 TITANIUM project under grant agreement 
 
 Please read this `README.md` from start to finish before attempting the analysis.
 
+Code is updated by Claire Ye and Chinedu Ojukwu to run on AWS Ubuntu 18.04+. 
+
 # Prerequisites
 
 - Docker
-- At least 3x storage space of the current blockchain
-
+~~- At least 3x storage space of the current blockchain~~
+- At least 10x storage space of current blockchain 
 
 # Installation
 
 - Clone this repository
-- CD into the root of this repository `zcash-empirical-analysis`
+- cd into the root of this repository `zcash-empirical-analysis`
 
 ## Configuration
 
@@ -118,7 +120,7 @@ so they can interact
 
     **Note: If you get a `permission denied error` then `chmod +x` the script file**
 
-- Once the Zcash node is synced, the postgres database can be populated with data
+- Once the Zcash node is synced, the postgres database can be populated with data. **The Zcash node needs to be fully synced and not downloading new blocks in order to take RPC calls. Yeah, it sucks.** 
     - Login into the `zcashpostgres` node using the docker command above and run the following
     - To setup the database and instantiate the tables *Note: This will erase all previous data*
 
@@ -129,7 +131,8 @@ so they can interact
             cd $SCRIPTS
             python zcash_extraction.py
 
-        *Note: This command will take 1 hour per 1,500 blocks.
+        ~~*Note: This command will take 1 hour per 1,500 blocks.~~
+        *Note: This command will now take 3,000 blocks per hour. :) 
         It will parse all the available data on the node.
         If re-run it will start from the last block committed in postgres
         If you cannot get a `connection refused` error, please check
