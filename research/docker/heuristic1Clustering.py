@@ -161,6 +161,7 @@ def clusterStats(txs, clusters, graph, addressStats, distinctnodeandtxs, writeTo
     addressValues = hf.loadAddressesFromCsv()
     poolAddresses = set(addressValues['poolAddresses'].keys())
     pools = addressValues['poolAddresses'].keys()
+    pool_dict = addressValues['poolAddresses']
     foundersAddresses = addressValues['foundersAddress']
     minersAddresses = addressValues['minersAddresses']
     minersHeuristicAddresses = addressValues['minersHeuristicAddresses']
@@ -224,7 +225,7 @@ def clusterStats(txs, clusters, graph, addressStats, distinctnodeandtxs, writeTo
                 word += "  - Mining Pools found : " + str(set(poolsFound)) + "\n"
                 poolList = []
                 for addrx in poolsFound:
-                    poolList.append(pools[addrx])
+                    poolList.append(pool_dict[addrx])
                 word += "  - Mining pools Names : " + str(set(poolList)) + "\n"
             if len(minersFound):
                 word += "  - Miners found : " + str(set(minersFound)) + "\n"
