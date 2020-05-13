@@ -398,6 +398,8 @@ If the client is not synced up to current block height, then it will not allow R
 
 `pip install [some Python import]`
 
+Most likely due to some packages not found while creating container environments. Look out for warnings during `docker-compose build`. Reinstalling within the container's bash seems to fix it fine. 
+
 
 **java.io.IOException: No space left on device error while running `pqsl` commands before heuristics.** 
 
