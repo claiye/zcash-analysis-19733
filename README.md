@@ -420,6 +420,7 @@ Issue seems to be due to PySpark. Right now, it seems that it cannot process bey
 
 - Changed `zcash_extraction.py` port numbers to allow RPC calls between containers on AWS server. See section on AWS adjustments to find the appropraite `rpcport` for your experiment. 
 
+- **3x the blockchain space is far from enough to run this experiment. At around 26 GiB of blockchain information, we found 230 GiB of space to run the Docker containers insufficient.** It seems that as blockchain size increases, the need for more memory and RAM increases exponentially with it. It seems to be the case that Spark consumes a very large amount of temp storage while converting the block informations into an accessible format. 
 
 # Appendix
 
