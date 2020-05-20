@@ -12,6 +12,8 @@ Please read this `README.md` from start to finish before attempting the analysis
 
 Code is updated by Claire Ye and Chinedu Ojukwu to run on AWS Ubuntu 18.04+. 
 
+This repository is now ARCHIVED. Please see https://github.com/claiye/zec-traceability for updates. 
+
 # Prerequisites
 
 - Docker
